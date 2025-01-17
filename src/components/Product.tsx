@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { ProductProps } from "../../type";
 import Image from "next/image";
@@ -5,13 +6,23 @@ import { urlFor } from "@/lib/sanityClient";
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { MdOutlineStarPurple500 } from "react-icons/md";
 import { AiOutlineShopping } from "react-icons/ai";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/redux/getNowSlice";
+import toast, { Toaster } from "react-hot-toast";
 
 interface Props {
   product: ProductProps;
-  bg: string;
+  bg?: string;
 }
 
 const Product = ({ product, bg }: Props) => {
+  const dispatch = useDispatch();
+
+  // Function to handle the button click
+  const handleAddToCart = () => {
+    dispatch(addToCart(product));
+    toast.success(`${product?.title.substring(0, 12)}... added to cart`);
+  };
   // The slug related to particular product here, with that slug we can actually get the products details
   // console.log("slug product:", product?.slug?.current); //to get particular products
   return (
@@ -28,17 +39,24 @@ const Product = ({ product, bg }: Props) => {
             />
           </Link>
           <div className="absolute bottom-0 flex items-center gap-5 justify-center translate-y-[160%] group-hover:-translate-y-2 transition-transform duration-300">
-            <Link
-              href={"/"}
+            <button
+              // inject the product parameters with addToCart action
+              // onClick={() => {
+              //   dispatch(addToCart(product));
+              //   toast.success(
+              //     `${product?.title.substring(0, 12)}... added to cart`
+              //   );
+              // }}
+              onClick={handleAddToCart}
               className="bg-gray-800 text-gray-200 px-4 py-2 text-xs rounded-full flex items-center gap-1 hover:bg-gray-950 hover:text-white duration-200"
             >
               <span>
                 <AiOutlineShopping />
               </span>
               Add to bag
-            </Link>
+            </button>
             <Link
-              href={"/"}
+              href={`/product/${product?.slug?.current}`}
               className="bg-gray-800 text-gray-200 px-4 py-2 text-xs rounded-full flex items-center gap-1 hover:bg-gray-950 hover:text-white duration-200"
             >
               <span>
@@ -82,6 +100,15 @@ const Product = ({ product, bg }: Props) => {
           </div>
         </div>
       </div>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          style: {
+            background: "#000",
+            color: "#fff",
+          },
+        }}
+      />
     </div>
   );
 };

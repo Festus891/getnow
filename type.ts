@@ -34,7 +34,7 @@ export interface ProductProps {
 }
 
 export interface StateProps {
-  orebi: {
+  getNow: {
     productData: ProductProps[];
   };
 }
