@@ -3,7 +3,7 @@ import { ProductProps } from "../../type";
 import Image from "next/image";
 import { urlFor } from "@/lib/sanityClient";
 import Link from "next/link";
-import { ImCross } from "react-icons/im";
+// import { ImCross } from "react-icons/im";
 import Price from "./Price";
 import toast, { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";

@@ -2,7 +2,7 @@
 import Container from "./Container";
 import { useDispatch, useSelector } from "react-redux";
 import { StateProps } from "../../type";
-import product from "@/sanity/schemaTypes/product";
+// import product from "@/sanity/schemaTypes/product";
 import CartItem from "./CartItem";
 import { resetCart } from "@/redux/getNowSlice";
 import toast from "react-hot-toast";

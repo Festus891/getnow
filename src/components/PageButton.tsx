@@ -1,18 +1,18 @@
 "use client";
 import Link from "next/link";
-import { MdSwitchAccount } from "react-icons/md";
+// import { MdSwitchAccount } from "react-icons/md";
 import { RiShoppingCart2Fill } from "react-icons/ri";
 import { useSelector } from "react-redux";
 import { StateProps } from "../../type";
-import { signIn, useSession } from "next-auth/react";
-import Image from "next/image";
-import toast, { Toaster } from "react-hot-toast";
+// import { useSession } from "next-auth/react";
+// import Image from "next/image";
+import { Toaster } from "react-hot-toast";
 
 const PageButton = () => {
   const { productData } = useSelector((state: StateProps) => state.getNow);
   // console.log(productData);
 
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
 
   return (
     <div className="fixed top-60 right-2 z-20 flex flex-col gap-2">

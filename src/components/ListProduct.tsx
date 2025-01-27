@@ -1,11 +1,12 @@
 import { urlFor } from "@/lib/sanityClient";
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { MdOutlineStarPurple500 } from "react-icons/md";
-import { AiOutlineShopping } from "react-icons/ai";
+// import { AiOutlineShopping } from "react-icons/ai";
 import { ProductProps } from "../../type";
 import Link from "next/link";
 
 import Image from "next/image";
+import { RiShoppingCart2Fill } from "react-icons/ri";
 
 interface Props {
   product: ProductProps;
@@ -71,9 +72,9 @@ const ListProduct = ({ product, bg }: Props) => {
         <div className="flex items-center gap-5 duration-300">
           <button className="bg-gray-800 text-gray-200 px-4 py-2 text-xs rounded-full flex items-center gap-1 hover:bg-gray-950 hover:text-white duration-200">
             <span className="text-sm mb-1">
-              <AiOutlineShopping />
-            </span>{" "}
-            Add to bag
+              <RiShoppingCart2Fill />
+            </span>
+            Add to cart
           </button>
           <Link
             href={{
@@ -84,7 +85,7 @@ const ListProduct = ({ product, bg }: Props) => {
             <span className="text-xs mb-1">
               <BsArrowsFullscreen />
             </span>{" "}
-            Quick view
+            Quick Look
           </Link>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ProductProps } from "../../type";
-import { act } from "react";
-import toast from "react-hot-toast";
+// import { act } from "react";
+// import toast from "react-hot-toast";
 
 interface StoreState {
   productData: ProductProps[];

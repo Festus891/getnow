@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-const page = ({ searchParams }: any) => {
+const Page = ({ searchParams }: any) => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (!searchParams?.session_id) {
@@ -14,7 +14,7 @@ const page = ({ searchParams }: any) => {
     } else {
       dispatch(resetCart());
     }
-  }, []);
+  }, [dispatch, searchParams?.session_id]);
   return (
     <Container className="flex items-center justify-center py-20">
       <div className="min-h-[400px] flex flex-col items-center justify-center gap-y-5">
@@ -39,4 +39,4 @@ const page = ({ searchParams }: any) => {
   );
 };
 
-export default page;
+export default Page;

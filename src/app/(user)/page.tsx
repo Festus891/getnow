@@ -16,9 +16,9 @@ const bannerQuery = groq`*[_type == 'banner']{
 } | order(_createdAt asc)`;
 
 //Query to fetch by New arrival data from sanity studio
-const newArrivalQuery = groq`*[_type == 'product' && position == 'New Arrivals']{
- ...
-} | order(_createdAt asc)`;
+// const newArrivalQuery = groq`*[_type == 'product' && position == 'New Arrivals']{
+//  ...
+// } | order(_createdAt asc)`;
 
 //Query to fetch  by BestSeller data from sanity studio
 const bestSellerQuery = groq`*[_type == 'product' && position == 'BestSeller']{
@@ -26,15 +26,15 @@ const bestSellerQuery = groq`*[_type == 'product' && position == 'BestSeller']{
 } | order(_createdAt asc)`;
 
 //Query to fetch by Special offer data from sanity studio
-const specialOfferQuery = groq`*[_type == 'product' && position == 'Special Offers']{
- ...
-} | order(_createdAt asc)`;
+// const specialOfferQuery = groq`*[_type == 'product' && position == 'Special Offers']{
+//  ...
+// } | order(_createdAt asc)`;
 
 const HomePage = async () => {
   const banners = await client.fetch(bannerQuery);
   const newArivalsProduct = await client.fetch(bestSellerQuery);
   const bestSellersProduct = await client.fetch(bestSellerQuery);
-  const specialOfferProduct = await client.fetch(specialOfferQuery);
+  // const specialOfferProduct = await client.fetch(specialOfferQuery);
   // console.log("banner data:", banners);
   return (
     <main className="text-sm overflow-hidden min-h-screen">

@@ -9,29 +9,43 @@ import { ProductProps } from "../../../../../type";
 import { PortableText } from "@portabletext/react";
 import { RichText } from "@/components/RichText";
 
-interface Props {
-  params: {
-    slug: string;
-  };
+// interface PageProps {
+//   params: { slug: string };
+// }
+
+type Params = Promise<{ slug: string }>;
+
+export async function generateStaticParams() {
+  const query = groq`*[_type == 'product']{
+    slug
+  }`;
+
+  const slugs = await client.fetch(query);
+  return slugs.map((slug: ProductProps) => ({
+    params: { slug: slug?.slug?.current },
+  }));
 }
 
-export const generateStaticParams = async () => {
-  const query = groq`*[_type == 'product']{
-    slug}`;
+// export const generateStaticParams = async (): Promise<
+//   { params: { slug: string } }[]
+// > => {
+//   const query = groq`*[_type == 'product']{
+//     slug
+//   }`;
 
-  const slugs: any = await client.fetch(query);
-  const slugRoutes = slugs.map((slug: any) => slug?.slug?.current);
-  return slugRoutes?.map((slug: string) => ({
-    slug,
-  }));
-};
+//   const slugs = await client.fetch(query);
+//   return slugs.map((slug: ProductProps) => ({
+//     params: { slug: slug?.slug?.current },
+//   }));
+// };
 
 const specialOffersQuery = groq`*[_type == 'product' && position == 'on Sale']{
     ...
    } | order(_createdAt asc)`;
 
 //the particular product to display we can get it from the params
-const SinglePage = async ({ params: { slug } }: Props) => {
+const SinglePage = async ({ params }: { params: Params }) => {
+  const { slug } = await params; // Destructure params properly
   const query = groq`*[_type == 'product' && slug.current == $slug][0]{
     ...
     }`;

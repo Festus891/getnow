@@ -5,7 +5,7 @@ import Image from "next/image";
 import { urlFor } from "@/lib/sanityClient";
 import { BsArrowsFullscreen } from "react-icons/bs";
 import { MdOutlineStarPurple500 } from "react-icons/md";
-import { AiOutlineShopping } from "react-icons/ai";
+// import { AiOutlineShopping } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/redux/getNowSlice";
 import toast, { Toaster } from "react-hot-toast";

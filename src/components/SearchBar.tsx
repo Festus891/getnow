@@ -3,9 +3,9 @@ import { useRef, useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
-import { ProductProps, StateProps } from "../../type";
+import { ProductProps } from "../../type";
 import Image from "next/image";
 import { products, urlFor } from "@/lib/sanityClient";
 import { AiOutlineClose } from "react-icons/ai";
@@ -139,49 +139,51 @@ const SearchBar = () => {
 
       {/* Recent Searches in Grid Layout with Staggered Animation */}
       <AnimatePresence>
-        {recentSearches.length > 0 && searchQuery === "" && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-            className="absolute w-full bg-white border border-gray-300 shadow-lg mt-1 z-50 rounded-md p-2"
-          >
-            <p className="text-gray-500 text-sm font-semibold mb-2">
-              Recent Searches
-            </p>
-            <AiOutlineClose
-              className="cursor-pointer text-gray-500 hover:text-red-500"
-              onClick={handleClearSearches} // Close dropdown on click
-            />
+        {showRecentSearches &&
+          recentSearches.length > 0 &&
+          searchQuery === "" && (
             <motion.div
-              className="grid grid-cols-3 gap-2"
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={{
-                visible: { transition: { staggerChildren: 0.1 } },
-                hidden: {},
-              }}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="absolute w-full bg-white border border-gray-300 shadow-lg mt-1 z-50 rounded-md p-2"
             >
-              {recentSearches.map((query, index) => (
-                <motion.div
-                  ref={searchRef}
-                  key={index}
-                  className="p-2 bg-gray-100 hover:bg-gray-200 rounded-md cursor-pointer text-center"
-                  onClick={() => setSearchQuery(query)}
-                  whileHover={{ scale: 1.05 }}
-                  variants={{
-                    hidden: { opacity: 0, y: -10 },
-                    visible: { opacity: 1, y: 0 },
-                  }}
-                >
-                  {query}
-                </motion.div>
-              ))}
+              <p className="text-gray-500 text-sm font-semibold mb-2">
+                Recent Searches
+              </p>
+              <AiOutlineClose
+                className="cursor-pointer text-gray-500 hover:text-red-500"
+                onClick={handleClearSearches} // Close dropdown on click
+              />
+              <motion.div
+                className="grid grid-cols-3 gap-2"
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={{
+                  visible: { transition: { staggerChildren: 0.1 } },
+                  hidden: {},
+                }}
+              >
+                {recentSearches.map((query, index) => (
+                  <motion.div
+                    ref={searchRef}
+                    key={index}
+                    className="p-2 bg-gray-100 hover:bg-gray-200 rounded-md cursor-pointer text-center"
+                    onClick={() => setSearchQuery(query)}
+                    whileHover={{ scale: 1.05 }}
+                    variants={{
+                      hidden: { opacity: 0, y: -10 },
+                      visible: { opacity: 1, y: 0 },
+                    }}
+                  >
+                    {query}
+                  </motion.div>
+                ))}
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
+          )}
       </AnimatePresence>
     </div>
   );

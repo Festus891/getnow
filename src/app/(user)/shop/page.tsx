@@ -2,14 +2,13 @@
 import Container from "@/components/Container";
 import Product from "@/components/Product";
 import { products } from "@/lib/sanityClient";
-
 import { useEffect, useState } from "react";
 import { BsGridFill } from "react-icons/bs";
 import { ImList } from "react-icons/im";
 import { ProductProps } from "../../../../type";
 import ListProduct from "@/components/ListProduct";
 
-const page = () => {
+const Page = () => {
   const [showGrid, setShowGrid] = useState(true);
   const [showList, setShowList] = useState(false);
   const [productData, setProductData] = useState([]);
@@ -69,4 +68,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

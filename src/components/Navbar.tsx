@@ -10,9 +10,9 @@ import { usePathname } from "next/navigation";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useSelector } from "react-redux";
-import { ProductProps, StateProps } from "../../type";
+import { StateProps } from "../../type";
 import { MdSwitchAccount } from "react-icons/md";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import SearchBar from "./SearchBar";
 
 const Navbar = () => {
@@ -88,7 +88,7 @@ const Navbar = () => {
           >
             {session?.user ? (
               <Image
-                src={session?.user?.image!} // Default image fallback
+                src={session?.user?.image || "./default"} // Default image fallback
                 alt="user image"
                 width={500}
                 height={500}
