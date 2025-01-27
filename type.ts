@@ -10,6 +10,7 @@ export interface ProductProps {
   ratings: number;
   description: string;
   brand: string;
+  stock: number;
   slug: {
     current: string;
     _type: string;

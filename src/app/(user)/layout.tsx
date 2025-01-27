@@ -9,6 +9,9 @@ import Layout from "@/components/Layout";
 export const metadata: Metadata = {
   title: "GetNow store || Best place to shop",
   description: "Trusted online shopping",
+  icons: {
+    icon: "/fav.png", // Path to your favicon
+  },
 };
 
 export default function RootLayout({

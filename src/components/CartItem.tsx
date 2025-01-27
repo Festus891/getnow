@@ -12,6 +12,7 @@ import {
   deleteProduct,
   increaseQuantity,
 } from "@/redux/getNowSlice";
+import { MdDelete } from "react-icons/md";
 interface Props {
   item: ProductProps;
 }
@@ -38,10 +39,11 @@ const CartItem = ({ item }: Props) => {
   return (
     <div className="w-full grid grid-cols-5 mb-4 border py-4">
       <div className="flex col-span-5 md:col-span-2 items-center gap-4 ml-4 ">
-        <ImCross
-          onClick={handleDeleteProduct}
-          className="text-primeColor hover:text-red-500 cursor-pointer duration-300 "
-        />
+        <div className="flex flex-col items-center justify-center text-primeColor hover:text-red-500 cursor-pointer duration-300 ">
+          <MdDelete onClick={handleDeleteProduct} />
+          <p>Remove Item</p>
+        </div>
+
         <Link href={`/product/${item?.slug?.current}`}>
           <Image
             src={urlFor(item?.image).url()}
@@ -64,7 +66,7 @@ const CartItem = ({ item }: Props) => {
           >
             -
           </span>
-          <p>{item?.quantity}</p>{" "}
+          <p>{item?.quantity}</p>
           <span
             onClick={handleIncreaseQuantity}
             className="w-6 h-6 bg-gray-100 text-2xl flex items-center justify-center hover:bg-gray-300 cursor-pointer duration-300 border-[1px] border-gray-300 hover:border-gray-500"

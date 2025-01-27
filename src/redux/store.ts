@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import getNowReducer from "./getNowSlice";
-// redux persist to implement browser site or memory in tour application
 import {
   persistStore,
   persistReducer,
@@ -12,44 +11,31 @@ import {
   REGISTER,
   WebStorage,
 } from "redux-persist";
-import createWebStorage from "redux-persist/es/storage/createWebStorage";
+
+// ✅ Importing correct built-in storage
+import storage from "redux-persist/lib/storage";
 
 export function createPersistStore(): WebStorage {
-  const isServer = typeof window === "undefined";
-
-  // we will return our dummy server : we are creating a dummy server because we cant directly inject redux persist in Nexjs 14 upward or so
-  if (isServer) {
+  if (typeof window === "undefined") {
     return {
-      getItem() {
-        return Promise.resolve(null);
-      },
-      setItem() {
-        return Promise.resolve();
-      },
-      removeItem() {
-        return Promise.resolve();
-      },
+      getItem: async () => null,
+      setItem: async () => {},
+      removeItem: async () => {},
     };
   }
-  return createWebStorage("local");
+  return storage;
 }
-
-const storage =
-  typeof window !== "undefined"
-    ? createWebStorage("local")
-    : createPersistStore;
 
 const persistConfig: any = {
   key: "root",
   version: 1,
-  storage,
+  storage, // ✅ Using correct storage here
 };
 
 const persistedReducer = persistReducer(persistConfig, getNowReducer);
 
 export const store = configureStore({
   reducer: {
-    // getNow: getNowReducer,
     getNow: persistedReducer,
   },
   middleware: (getDefaultMiddleware) =>

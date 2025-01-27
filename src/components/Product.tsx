@@ -9,6 +9,7 @@ import { AiOutlineShopping } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/redux/getNowSlice";
 import toast, { Toaster } from "react-hot-toast";
+import { RiShoppingCart2Fill } from "react-icons/ri";
 
 interface Props {
   product: ProductProps;
@@ -51,9 +52,9 @@ const Product = ({ product, bg }: Props) => {
               className="bg-gray-800 text-gray-200 px-4 py-2 text-xs rounded-full flex items-center gap-1 hover:bg-gray-950 hover:text-white duration-200"
             >
               <span>
-                <AiOutlineShopping />
+                <RiShoppingCart2Fill />
               </span>
-              Add to bag
+              Add to cart
             </button>
             <Link
               href={`/product/${product?.slug?.current}`}
@@ -62,7 +63,7 @@ const Product = ({ product, bg }: Props) => {
               <span>
                 <BsArrowsFullscreen />
               </span>
-              Quick view
+              View Details
             </Link>
           </div>
         </div>

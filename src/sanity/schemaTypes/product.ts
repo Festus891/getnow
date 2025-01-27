@@ -86,6 +86,11 @@ export default defineType({
       title: "Quantity",
       type: "number",
     }),
+    defineField({
+      name: "stock",
+      title: "Stock",
+      type: "number",
+    }),
   ],
   preview: {
     select: {
