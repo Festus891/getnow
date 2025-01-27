@@ -1,7 +1,7 @@
 "use client";
 import Container from "@/components/Container";
 import Product from "@/components/Product";
-import { products } from "@/lib/sanityClient";
+// import { products } from "@/lib/sanityClient";
 import { useEffect, useState } from "react";
 import { BsGridFill } from "react-icons/bs";
 import { ImList } from "react-icons/im";
@@ -13,13 +13,26 @@ const Page = () => {
   const [showList, setShowList] = useState(false);
   const [productData, setProductData] = useState([]);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const data = await products();
+  //       setProductData(data);
+  //     } catch (error) {
+  //       console.error("Error fetching  product data:", error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await products();
+        const res = await fetch("/api/products");
+        const data = await res.json();
         setProductData(data);
       } catch (error) {
-        console.error("Error fetching  product data:", error);
+        console.error("Error fetching product data:", error);
       }
     };
     fetchData();
