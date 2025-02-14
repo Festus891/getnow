@@ -14,6 +14,7 @@ import { StateProps } from "../../type";
 import { MdSwitchAccount } from "react-icons/md";
 import { Toaster } from "react-hot-toast";
 import SearchBar from "./SearchBar";
+// import { RxAvatar } from "react-icons/rx";
 
 const Navbar = () => {
   const pathName = usePathname();
@@ -88,7 +89,7 @@ const Navbar = () => {
           >
             {session?.user ? (
               <Image
-                src={session?.user?.image || "./default"} // Default image fallback
+                src={session?.user?.image || "assets/default_avatar.jpg"} // Default image fallback
                 alt="user image"
                 width={500}
                 height={500}
@@ -114,10 +115,20 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu Button */}
-        <HiMenuAlt2
-          onClick={() => setIsOpen(true)}
-          className="inline-flex md:hidden cursor-pointer w-8 h-6  "
-        />
+        <div className="flex gap-6">
+          <Image
+            src={session?.user?.image || "assets/default_avatar.jpg"} // Default image fallback
+            alt="user image"
+            width={500}
+            height={500}
+            // style={{ width: 35, height: 35 }}
+            className="rounded-full inline-flex md:hidden cursor-pointer w-8 h-6"
+          />
+          <HiMenuAlt2
+            onClick={() => setIsOpen(true)}
+            className="inline-flex md:hidden cursor-pointer w-8 h-6  "
+          />
+        </div>
       </nav>
 
       {/* Mobile Navigation Menu */}
@@ -168,7 +179,7 @@ const Navbar = () => {
             >
               {session?.user ? (
                 <Image
-                  src={session.user.image!}
+                  src={session.user.image || "assets/default_avatar.jpg"}
                   alt="user image"
                   width={35}
                   height={35}

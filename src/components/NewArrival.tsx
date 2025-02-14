@@ -47,7 +47,7 @@ const NewArrival = ({ products }: Props) => {
     ],
   };
   return (
-    <Container className="-mt-[10rem] ">
+    <Container className="-mt-[5rem] ">
       <div>
         <Slider {...settings}>
           {" "}

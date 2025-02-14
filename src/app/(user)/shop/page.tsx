@@ -12,6 +12,7 @@ const Page = () => {
   const [showGrid, setShowGrid] = useState(true);
   const [showList, setShowList] = useState(false);
   const [productData, setProductData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -30,11 +31,18 @@ const Page = () => {
       try {
         const res = await fetch("/api/products");
         const data = await res.json();
-        setProductData(data);
+
+        // Simulate loading delay
+        setTimeout(() => {
+          setProductData(data);
+          setLoading(false);
+        }, 2000); // 2 seconds delay
       } catch (error) {
         console.error("Error fetching product data:", error);
+        setLoading(false); // Ensure loader stops even if there is an error
       }
     };
+
     fetchData();
   }, []);
   // We cant see anything in the server console because we have made this component a client side component , se we check the browser console
@@ -64,18 +72,27 @@ const Page = () => {
           </span>
         </div>
       </div>
-      {showGrid ? (
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
-          {productData.map((item: ProductProps) => (
-            <Product key={item._id} product={item} />
-          ))}
+
+      {loading ? (
+        <div className="flex justify-center items-center h-40">
+          <div className="w-10 h-10 border-4 border-gray-300 border-t-primeColor rounded-full animate-spin"></div>
         </div>
       ) : (
-        <div className="w-full grid grid-cols-1 gap-5">
-          {productData.map((item: ProductProps) => (
-            <ListProduct key={item._id} product={item} />
-          ))}
-        </div>
+        <>
+          {showGrid ? (
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+              {productData.map((item: ProductProps) => (
+                <Product key={item._id} product={item} />
+              ))}
+            </div>
+          ) : (
+            <div className="w-full grid grid-cols-1 gap-5">
+              {productData.map((item: ProductProps) => (
+                <ListProduct key={item._id} product={item} />
+              ))}
+            </div>
+          )}
+        </>
       )}
     </Container>
   );

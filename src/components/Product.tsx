@@ -70,7 +70,7 @@ const Product = ({ product, bg }: Props) => {
         {product?.isnew && (
           <div className="absolute top-2 right-2 z-50">
             <p className="bg-primeColor px-4 py-1 text-white flex items-center justify-center text-sm font-semibold hover:bg-black duration-300 cursor-pointer rounded-md">
-              New Arrival
+              New Arrivals
             </p>
           </div>
         )}
