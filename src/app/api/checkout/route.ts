@@ -27,7 +27,7 @@ export const POST = async (request: NextRequest) => {
       mode: "payment",
       success_url:
         "https://getnow-shopping.vercel.app/success?session_id={CHECKOUT_SESSION_ID}",
-      cancel_url: `${process.env.NEXTAUTH_URL}/cancel`,
+      cancel_url: `${process.env.NEXTAUTH_URL}/`,
       metadata: {
         email,
       },

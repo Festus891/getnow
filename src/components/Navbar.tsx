@@ -89,7 +89,7 @@ const Navbar = () => {
           >
             {session?.user ? (
               <Image
-                src={session?.user?.image || "assets/default_avatar.jpg"} // Default image fallback
+                src={session?.user?.image || "/assets/default_avatar.jpg"} // Default image fallback
                 alt="user image"
                 width={500}
                 height={500}
@@ -117,7 +117,7 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <div className="flex gap-6">
           <Image
-            src={session?.user?.image || "assets/default_avatar.jpg"} // Default image fallback
+            src={session?.user?.image || "/assets/default_avatar.jpg"} // Default image fallback
             alt="user image"
             width={500}
             height={500}
@@ -179,7 +179,7 @@ const Navbar = () => {
             >
               {session?.user ? (
                 <Image
-                  src={session.user.image || "assets/default_avatar.jpg"}
+                  src={session.user.image || "/assets/default_avatar.jpg"}
                   alt="user image"
                   width={35}
                   height={35}
