@@ -12,8 +12,10 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { useSelector } from "react-redux";
 import { StateProps } from "../../type";
 import { MdSwitchAccount } from "react-icons/md";
+import { BiSearch } from "react-icons/bi"; // Import Search Icon
 import { Toaster } from "react-hot-toast";
 import SearchBar from "./SearchBar";
+import avatar from "@/assets/default_avatar.jpg";
 // import { RxAvatar } from "react-icons/rx";
 
 const Navbar = () => {
@@ -25,6 +27,8 @@ const Navbar = () => {
   // console.log("user image", session?.user?.image);
 
   const [isOpen, setIsOpen] = useState(false); // State to toggle mobile menu
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
+  // const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const adminEmails = ["festus4537@gmail.com", "festus891@yahoo.com"];
   const isAdmin =
@@ -89,7 +93,8 @@ const Navbar = () => {
           >
             {session?.user ? (
               <Image
-                src={session?.user?.image || "/assets/default_avatar.jpg"} // Default image fallback
+                src={session?.user?.image || avatar}
+                // src={avatar}
                 alt="user image"
                 width={500}
                 height={500}
@@ -116,20 +121,57 @@ const Navbar = () => {
 
         {/* Mobile Menu Button */}
         <div className="flex gap-6">
-          <Image
-            src={session?.user?.image || "/assets/default_avatar.jpg"} // Default image fallback
-            alt="user image"
-            width={500}
-            height={500}
-            // style={{ width: 35, height: 35 }}
-            className="rounded-full inline-flex md:hidden cursor-pointer w-8 h-6"
-          />
+          {/* Mobile Search Icon */}
+          <div className="md:hidden">
+            <BiSearch
+              onClick={() => setShowMobileSearch(true)}
+              className="text-2xl cursor-pointer text-gray-600"
+            />
+          </div>
+
+          {session?.user ? (
+            <Image
+              src={session?.user?.image || avatar}
+              alt="user image"
+              width={500}
+              height={500}
+              // style={{ width: 35, height: 35 }}
+              className="rounded-full inline-flex md:hidden cursor-pointer w-8 h-6"
+            />
+          ) : (
+            <Image
+              onClick={() => {
+                if (!session?.user) {
+                  signIn();
+                }
+                setIsOpen(false);
+              }}
+              src={avatar}
+              alt="user image"
+              width={10}
+              height={10}
+              // style={{ width: 35, height: 35 }}
+              className="rounded-full inline-flex md:hidden cursor-pointer w-8 h-6"
+            />
+          )}
+
           <HiMenuAlt2
             onClick={() => setIsOpen(true)}
             className="inline-flex md:hidden cursor-pointer w-8 h-6  "
           />
         </div>
       </nav>
+
+      {/* Mobile Search Bar */}
+      {showMobileSearch && (
+        <div className="fixed inset-0 bg-white z-[101] p-4 flex items-center justify-center">
+          <SearchBar />
+          <IoCloseOutline
+            onClick={() => setShowMobileSearch(false)}
+            className="absolute top-4 right-4 text-3xl cursor-pointer text-gray-600 hover:text-red-600"
+          />
+        </div>
+      )}
 
       {/* Mobile Navigation Menu */}
       <div
@@ -179,7 +221,7 @@ const Navbar = () => {
             >
               {session?.user ? (
                 <Image
-                  src={session.user.image || "/assets/default_avatar.jpg"}
+                  src={session?.user?.image || avatar}
                   alt="user image"
                   width={35}
                   height={35}
