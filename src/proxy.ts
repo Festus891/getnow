@@ -1,9 +1,3 @@
-// export { default } from "next-auth/middleware";
-
-// export const config = {
-//   matcher: ["/checkout"],
-// };
-
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 const isProtectedRoute = createRouteMatcher([
@@ -14,7 +8,6 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
-  // Protect only these routes
   if (isProtectedRoute(req)) {
     await auth.protect();
   }
@@ -22,9 +15,9 @@ export default clerkMiddleware(async (auth, req) => {
 
 export const config = {
   matcher: [
-    // Everything except static files and Next internals
+    // Skip Next.js internals and all static files, unless found in search params
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // ✅ IMPORTANT: include API routes so auth() works in /api/*
-    "/api/(.*)",
+    // Always run for API routes
+    "/(api|trpc)(.*)",
   ],
 };

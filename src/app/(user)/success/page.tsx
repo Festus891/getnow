@@ -1,35 +1,47 @@
 "use client";
+
 import Container from "@/components/Container";
 import { resetCart } from "@/redux/getNowSlice";
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-const Page = ({ searchParams }: any) => {
+const SuccessPage = ({ searchParams }: any) => {
   const dispatch = useDispatch();
+  const router = useRouter();
+
   useEffect(() => {
     if (!searchParams?.session_id) {
-      redirect("/");
-    } else {
-      dispatch(resetCart());
+      router.replace("/");
+      return;
     }
-  }, [dispatch, searchParams?.session_id]);
+
+    // Clear cart after successful payment
+    dispatch(resetCart());
+  }, [dispatch, router, searchParams?.session_id]);
+
   return (
     <Container className="flex items-center justify-center py-20">
-      <div className="min-h-[400px] flex flex-col items-center justify-center gap-y-5">
-        <h2 className="text-4xl font-bold">
-          Your Payment Accepted by getNow online shopping
+      <div className="min-h-[400px] flex flex-col items-center justify-center gap-y-6 text-center">
+        <h2 className="text-3xl md:text-4xl font-bold">
+          🎉 Payment Successful!
         </h2>
-        <p>Now you can view your orders or continue Shopping with us</p>
-        <div className="flex items-center gap-x-5">
-          {/* <Link href={"/order"}>
-            <button className="bg-black text-slate-100 w-44 h-12 rounded-full text-base font-semibold hover:bg-primeColor duration-300">
-              View Orders
+
+        <p className="text-gray-600 max-w-md">
+          Thank you for shopping with GetNow. Your order has been placed
+          successfully.
+        </p>
+
+        <div className="flex flex-col sm:flex-row items-center gap-4 mt-6">
+          <Link href="/orders">
+            <button className="bg-primeColor text-white w-48 h-12 rounded-full text-base font-semibold hover:bg-black duration-300">
+              View My Orders
             </button>
-          </Link> */}
-          <Link href={"/"}>
-            <button className="bg-black text-slate-100 w-44 h-12 rounded-full text-base font-semibold hover:bg-primeColor duration-300">
+          </Link>
+
+          <Link href="/">
+            <button className="bg-black text-white w-48 h-12 rounded-full text-base font-semibold hover:bg-primeColor duration-300">
               Continue Shopping
             </button>
           </Link>
@@ -39,4 +51,4 @@ const Page = ({ searchParams }: any) => {
   );
 };
 
-export default Page;
+export default SuccessPage;

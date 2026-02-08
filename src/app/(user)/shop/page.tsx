@@ -14,18 +14,6 @@ const Page = () => {
   const [productData, setProductData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const data = await products();
-  //       setProductData(data);
-  //     } catch (error) {
-  //       console.error("Error fetching  product data:", error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
   useEffect(() => {
     const fetchData = async () => {
       try {

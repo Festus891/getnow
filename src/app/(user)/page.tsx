@@ -1,5 +1,6 @@
 import Banner from "@/components/Banner";
 import BestSeller from "@/components/BestSeller";
+import EnhancedBanner from "@/components/EnhancedBanner";
 import HomeBanner from "@/components/HomeBanner";
 import NewArrival from "@/components/NewArrival";
 import YearProduct from "@/components/YearProduct";
@@ -15,20 +16,10 @@ const bannerQuery = groq`*[_type == 'banner']{
   _id
 } | order(_createdAt asc)`;
 
-//Query to fetch by New arrival data from sanity studio
-// const newArrivalQuery = groq`*[_type == 'product' && position == 'New Arrivals']{
-//  ...
-// } | order(_createdAt asc)`;
-
 //Query to fetch  by BestSeller data from sanity studio
 const bestSellerQuery = groq`*[_type == 'product' && position == 'BestSeller']{
  ...
 } | order(_createdAt asc)`;
-
-//Query to fetch by Special offer data from sanity studio
-// const specialOfferQuery = groq`*[_type == 'product' && position == 'Special Offers']{
-//  ...
-// } | order(_createdAt asc)`;
 
 const HomePage = async () => {
   const banners = await client.fetch(bannerQuery);
@@ -38,7 +29,9 @@ const HomePage = async () => {
   // console.log("banner data:", banners);
   return (
     <main className="text-sm overflow-hidden min-h-screen">
-      <Banner banners={banners} />
+      <EnhancedBanner banners={banners} />
+
+      {/* <Banner banners={banners} /> */}
       <NewArrival products={newArivalsProduct} />
       <HomeBanner />
       <BestSeller products={bestSellersProduct} title="Best Selling Products" />

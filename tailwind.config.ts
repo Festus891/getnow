@@ -13,6 +13,7 @@ export default {
         sans: ["Poppins", ...defaultTheme.fontFamily.sans],
         display: ["Poppins", ...defaultTheme.fontFamily.sans],
       },
+
       colors: {
         primeColor: "#262626",
         lightText: "#6D6D6D",
@@ -25,9 +26,24 @@ export default {
           "0%": { transform: "translateX(-100%)" },
           "100%": { transform: "translateX(100%)" },
         },
+        fadeIn: {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        slideUp: {
+          "0%": { opacity: "0", transform: "translateY(30px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        scaleIn: {
+          "0%": { opacity: "0", transform: "scale(0.95)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
       },
       animation: {
         shine: "shine 2s linear infinite",
+        fadeIn: "fadeIn 0.8s ease-out",
+        slideUp: "slideUp 0.8s ease-out",
+        scaleIn: "scaleIn 0.8s ease-out",
       },
     },
   },
