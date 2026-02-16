@@ -234,7 +234,7 @@ const ModernNavbar = () => {
                         <BiUser className="text-lg text-gray-600" />
                         <span>My Profile</span>
                       </Link>
-
+                      {/* 
                       <Link
                         href="/orders"
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150"
@@ -242,7 +242,7 @@ const ModernNavbar = () => {
                       >
                         <BiPackage className="text-lg text-gray-600" />
                         <span>My Orders</span>
-                      </Link>
+                      </Link> */}
 
                       <Link
                         href="/wishlist"

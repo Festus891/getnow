@@ -1,64 +1,4 @@
-// import { client } from "@/lib/sanityClient";
-// import { NextResponse } from "next/server";
-// import Stripe from "stripe";
-
-// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-//   apiVersion: "2024-12-18.acacia",
-// });
-
-// const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-
-// const fullfillOrder = async (session: any) => {
-//   try {
-//     await client.create({
-//       _type: "order",
-//       status: session.status,
-//       message: "Payment done",
-//       description: session?.description || " message from orders",
-//       title: session?.id || "Orders",
-//       method: session.confirmation_method,
-//       amount: session.amount / 100,
-//       // lineItem: lineItems,
-//     });
-//   } catch (error: any) {
-//     console.log("error", error?.message);
-//   }
-
-//   console.log("session", session);
-//   NextResponse.json({
-//     message: "Payment done",
-//     status: true,
-//     method: session.status,
-//     data: session,
-//   });
-// };
-
-// export async function POST(req: Request) {
-//   const payload = await req.text();
-//   const signature = req.headers.get("stripe-signature");
-
-//   let event: Stripe.Event | null = null;
-//   try {
-//     event = stripe.webhooks.constructEvent(payload, signature!, webhookSecret);
-
-//     if (event?.type === "payment_intent.succeeded") {
-//       const session = event.data.object;
-//       return fullfillOrder(session)
-//         .then(() => NextResponse.json({ status: 200 }))
-//         .catch((err) =>
-//           NextResponse.json({ error: err?.message }, { status: 500 })
-//         );
-//     }
-//   } catch (err) {
-//     if (err instanceof Error) {
-//       console.error(err.message);
-//       return NextResponse.json({ message: err.message }, { status: 400 });
-//     }
-//   }
-
-//   return NextResponse.json({ received: true });
-// }
-
+// app/api/webhook/route.ts
 import { client } from "@/lib/sanityClient";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
@@ -69,55 +9,69 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
+const fulfillOrder = async (session: Stripe.Checkout.Session) => {
+  try {
+    // Retrieve line items from the session
+    const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
+      expand: ["data.price.product"],
+    });
+
+    // Create order in Sanity
+    const order = await client.create({
+      _type: "order",
+      userId: session.metadata?.userId || "",
+      email: session.metadata?.email || session.customer_email || "",
+      userName: session.metadata?.userName || "",
+      status: session.payment_status,
+      paymentIntentId: session.payment_intent as string,
+      amount: session.amount_total! / 100,
+      currency: session.currency?.toUpperCase() || "NGN",
+      lineItems: lineItems.data.map((item: any) => ({
+        name: item.description,
+        quantity: item.quantity,
+        price: item.price?.unit_amount! / 100,
+        image: (item.price?.product as any)?.images?.[0] || "",
+      })),
+      createdAt: new Date().toISOString(),
+    });
+
+    console.log("Order created successfully:", order);
+
+    return NextResponse.json({
+      message: "Payment done",
+      status: true,
+      orderId: order._id,
+    });
+  } catch (error: any) {
+    console.error("Error fulfilling order:", error?.message);
+    throw error;
+  }
+};
+
 export async function POST(req: Request) {
   const payload = await req.text();
   const signature = req.headers.get("stripe-signature");
 
-  let event: Stripe.Event;
+  let event: Stripe.Event | null = null;
 
   try {
     event = stripe.webhooks.constructEvent(payload, signature!, webhookSecret);
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Webhook error";
-    return NextResponse.json({ error: message }, { status: 400 });
-  }
 
-  try {
-    // ✅ Correct event for Stripe Checkout
-    if (event.type === "checkout.session.completed") {
+    if (event?.type === "checkout.session.completed") {
       const session = event.data.object as Stripe.Checkout.Session;
 
-      const userId = session.metadata?.userId;
-      const email = session.metadata?.email;
-
-      // Avoid duplicates if webhook retries
-      const stripeSessionId = session.id;
-
-      const existing = await client.fetch(
-        `*[_type=="order" && stripeSessionId==$id][0]{_id}`,
-        { id: stripeSessionId },
-      );
-
-      if (!existing?._id) {
-        await client.create({
-          _type: "order",
-          stripeSessionId,
-          userId: userId || null,
-          email: email || session.customer_details?.email || null,
-
-          status: session.payment_status, // "paid" | "unpaid" | "no_payment_required"
-          message: "Payment done",
-          title: `Order ${stripeSessionId}`,
-          amount: (session.amount_total ?? 0) / 100,
-          currency: session.currency?.toUpperCase() || "NGN",
-          createdAt: new Date().toISOString(),
-        });
-      }
+      return fulfillOrder(session)
+        .then(() => NextResponse.json({ received: true, status: 200 }))
+        .catch((err) =>
+          NextResponse.json({ error: err?.message }, { status: 500 }),
+        );
     }
-
-    return NextResponse.json({ received: true });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Server error";
-    return NextResponse.json({ error: message }, { status: 500 });
+    if (err instanceof Error) {
+      console.error("Webhook error:", err.message);
+      return NextResponse.json({ message: err.message }, { status: 400 });
+    }
   }
+
+  return NextResponse.json({ received: true });
 }

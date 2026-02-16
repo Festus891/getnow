@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { currentUser } from "@clerk/nextjs/server";
-
 import { client } from "@/lib/sanityClient";
 import { groq } from "next-sanity";
 
 export async function GET() {
-  // const { userId } = await auth(); // ✅ no await
   const user = await currentUser();
   const userId = user?.id;
 
@@ -17,13 +14,15 @@ export async function GET() {
   const query = groq`*[_type == "order" && userId == $userId]
     | order(createdAt desc) {
       _id,
-      stripeSessionId,
+      userId,
+      email,
+      userName,
+      status,
+      paymentIntentId,
       amount,
       currency,
-      status,
-      createdAt,
-      message,
-      title
+      lineItems,
+      createdAt
     }`;
 
   const orders = await client.fetch(query, { userId });
